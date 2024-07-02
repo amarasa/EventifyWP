@@ -19,5 +19,19 @@ function override_event_templates($template)
         }
     }
 
+    if (is_tax('organizer')) {
+        $organizer_template = plugin_dir_path(__FILE__) . '../templates/taxonomy-organizer.php';
+        if (file_exists($organizer_template)) {
+            return $organizer_template;
+        }
+    }
+
+    if (is_tax('event_category')) {
+        $event_category_template = plugin_dir_path(__FILE__) . '../templates/taxonomy-event_category.php';
+        if (file_exists($event_category_template)) {
+            return $event_category_template;
+        }
+    }
+
     return $template;
 }

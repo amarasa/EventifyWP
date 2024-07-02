@@ -1,6 +1,3 @@
-<?php
-// Custom header
-?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 
@@ -15,12 +12,22 @@
     <?php
     require_once plugin_dir_path(__FILE__) . '../template-functions.php';
 
+    $current_year_month = '';
+    $term = get_queried_object();
+
     $args = array(
         'post_type' => 'event',
         'posts_per_page' => -1,
         'meta_key' => '_event_start_date',
         'orderby' => 'meta_value',
-        'order' => 'ASC'
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'event_category',
+                'field'    => 'slug',
+                'terms'    => $term->slug,
+            ),
+        ),
     );
 
     $query = new WP_Query($args);
@@ -28,7 +35,7 @@
     if ($query->have_posts()) : ?>
 
         <header class="page-header">
-            <h1 class="page-title"><?php _e('Events', 'basic-events'); ?></h1>
+            <h1 class="page-title"><?php echo sprintf(__('Events in %s', 'basic-events'), $term->name); ?></h1>
         </header>
 
         <?php render_event_list($query); ?>
@@ -45,9 +52,6 @@
         </article>
     <?php endif; ?>
 
-    <?php
-    // Custom footer
-    ?>
     <?php wp_footer(); ?>
 </body>
 
