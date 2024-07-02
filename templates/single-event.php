@@ -17,9 +17,20 @@ while (have_posts()) : the_post();
     $related_events = get_post_meta(get_the_ID(), '_related_events', true);
     $venue_name = get_post_meta(get_the_ID(), '_event_venue_name', true);
     $additional_info = get_post_meta(get_the_ID(), '_event_additional_info', true);
+    $is_featured = get_post_meta(get_the_ID(), '_featured_event', true); // Check if event is featured
+
 ?>
 
-    <div class="single-event event-details">
+
+    <?php if ($is_featured) : ?>
+        <div class="featured-event-banner">
+            <!-- This is only here for Robert. Remove this or use this logic as you see fit -->
+            <p><?php _e('***Featured Event***', 'basic-events'); ?></p>
+        </div>
+    <?php endif; ?>
+
+    <div class="single-event event-details<?php echo $is_featured ? ' featured-event' : ''; ?>">
+
         <?php if ($featured_image) : ?>
             <div class="event-featured-image">
                 <img src="<?php echo esc_url($featured_image); ?>" alt="<?php the_title(); ?>">

@@ -46,8 +46,8 @@ function register_event_post_type_and_taxonomy()
         'menu_position'      => 5,
         'menu_icon'          => 'dashicons-calendar',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
-        'taxonomies'         => array('post_tag'), // Add post_tag here
-        'show_in_rest'       => $show_in_rest, // Set dynamically based on editor preference
+        'taxonomies'         => array('post_tag'),
+        'show_in_rest'       => $show_in_rest,
     );
 
     register_post_type('event', $args);
@@ -74,6 +74,8 @@ function register_event_post_type_and_taxonomy()
         'show_admin_column' => true,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'event-category'),
+        'show_in_rest'      => true,
+
     );
 
     register_taxonomy('event_category', array('event'), $taxonomy_args);
@@ -109,6 +111,8 @@ function register_organizer_taxonomy()
         'show_admin_column' => true,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'organizer'),
+        'show_in_rest'      => true,
+
     );
 
     register_taxonomy('organizer', array('event'), $args);

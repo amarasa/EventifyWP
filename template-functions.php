@@ -10,6 +10,7 @@ function render_event_list($query)
         while ($query->have_posts()) : $query->the_post();
             $recurrence_dates = get_post_meta(get_the_ID(), '_event_recurrence_dates', true);
             $all_dates = $recurrence_dates ? $recurrence_dates : [get_post_meta(get_the_ID(), '_event_start_date', true)];
+            $is_featured = get_post_meta(get_the_ID(), '_featured_event', true);
 
             foreach ($all_dates as $date) :
                 $start_date = $date;
@@ -27,7 +28,7 @@ function render_event_list($query)
                     echo '<h2 class="event-month-title">' . $current_year_month . '</h2>';
                 }
 ?>
-                <article id="post-<?php the_ID(); ?>" <?php post_class('event-archive-item'); ?>>
+                <article id="post-<?php the_ID(); ?>" <?php post_class('event-archive-item' . ($is_featured ? ' featured-event' : '')); ?>>
                     <div class="event-date">
                         <div class="event-day"><?php echo date('D', strtotime($start_date)); ?></div>
                         <div class="event-date-number"><?php echo date('j', strtotime($start_date)); ?></div>
