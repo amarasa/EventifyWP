@@ -61,7 +61,7 @@ while (have_posts()) : the_post();
                     <?php
                     $category_list = array();
                     foreach ($categories as $category) {
-                        $category_list[] = $category->name;
+                        $category_list[] = '<a href="' . get_term_link($category) . '">' . $category->name . '</a>';
                     }
                     echo implode(', ', $category_list);
                     ?>
@@ -85,7 +85,7 @@ while (have_posts()) : the_post();
                     <?php
                     $organizer_list = array();
                     foreach ($organizers as $organizer) {
-                        $organizer_list[] = $organizer->name;
+                        $organizer_list[] = '<a href="' . get_term_link($organizer) . '">' . $organizer->name . '</a>';
                     }
                     echo implode(', ', $organizer_list);
                     ?>
