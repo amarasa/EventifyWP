@@ -22,6 +22,16 @@ function register_event_post_type_and_taxonomy()
         'not_found_in_trash' => __('No events found in Trash.', 'basic-events')
     );
 
+    $editor_preference = get_option('events_plugin_editor_preference', 'classic'); // Default to 'classic' if option doesn't exist
+
+    // Set default value for show_in_rest
+    $show_in_rest = false;
+
+    // Check editor preference to determine show_in_rest value
+    if ($editor_preference === 'gutenberg') {
+        $show_in_rest = true;
+    }
+
     $args = array(
         'labels'             => $labels,
         'public'             => true,
@@ -37,6 +47,7 @@ function register_event_post_type_and_taxonomy()
         'menu_icon'          => 'dashicons-calendar',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
         'taxonomies'         => array('post_tag'), // Add post_tag here
+        'show_in_rest'       => $show_in_rest, // Set dynamically based on editor preference
     );
 
     register_post_type('event', $args);

@@ -46,18 +46,24 @@ add_action('admin_init', 'events_plugin_register_settings');
 
 function events_plugin_register_settings()
 {
+    // Register API key setting
     register_setting('events_plugin_settings_group', 'events_plugin_google_api_key');
 
+    // Register editor preference setting
+    register_setting('events_plugin_settings_group', 'events_plugin_editor_preference');
+
+    // Add API Settings section
     add_settings_section(
         'events_plugin_settings_section',
-        __('API Settings', 'basic-events'),
+        __('EventifyWP Settings', 'basic-events'),
         null,
         'events-plugin-settings'
     );
 
+    // Add API Key field
     add_settings_field(
         'events_plugin_google_api_key',
-        __('Google API Key', 'basic-events'),
+        __('EventifyWP Settings', 'basic-events'),
         'events_plugin_google_api_key_field',
         'events-plugin-settings',
         'events_plugin_settings_section'
@@ -67,8 +73,27 @@ function events_plugin_register_settings()
 function events_plugin_google_api_key_field()
 {
     $api_key = get_option('events_plugin_google_api_key');
-    echo '<input type="text" id="events_plugin_google_api_key" name="events_plugin_google_api_key" value="' . esc_attr($api_key) . '" size="50" />';
+    $editor_preference = get_option('events_plugin_editor_preference', 'classic'); // Default to 'classic' if option doesn't exist
+
+?>
+    <tr valign="top">
+        <th scope="row"><?php _e('Google API Key', 'basic-events'); ?></th>
+        <td>
+            <input type="text" id="events_plugin_google_api_key" name="events_plugin_google_api_key" value="<?php echo esc_attr($api_key); ?>" size="50" />
+        </td>
+    </tr>
+    <tr valign="top">
+        <th scope="row"><?php _e('Editor Preference', 'basic-events'); ?></th>
+        <td>
+            <select id="events_plugin_editor_preference" name="events_plugin_editor_preference">
+                <option value="classic" <?php selected('classic', $editor_preference); ?>><?php _e('Classic Editor', 'basic-events'); ?></option>
+                <option value="gutenberg" <?php selected('gutenberg', $editor_preference); ?>><?php _e('Gutenberg Editor', 'basic-events'); ?></option>
+            </select>
+        </td>
+    </tr>
+<?php
 }
+
 
 // Render the shortcodes page
 function events_plugin_shortcodes_page()
