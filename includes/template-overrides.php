@@ -33,5 +33,12 @@ function override_event_templates($template)
         }
     }
 
+    if (is_tag()) {
+        $tag_template = plugin_dir_path(__FILE__) . '../templates/taxonomy-post_tag.php';
+        if (file_exists($tag_template)) {
+            return $tag_template;
+        }
+    }
+
     return $template;
 }
