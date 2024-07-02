@@ -92,8 +92,17 @@ function render_event_details_meta_box($post)
             });
 
             toggleCostField(); // Initial check
+
+            // Clear recurrence fields when 'None' is selected
+            $('#event_recurrence_type').change(function() {
+                if ($(this).val() === 'none') {
+                    $('#event_recurrence_interval').val('');
+                    $('#event_recurrence_end_date').val('');
+                }
+            });
         });
     </script>
+
 <?php
 }
 
@@ -150,10 +159,18 @@ function save_event_details($post_id)
     $recurrence_end_date = sanitize_text_field($_POST['event_recurrence_end_date']);
     update_post_meta($post_id, '_event_recurrence_end_date', $recurrence_end_date);
 
-    // Generate and save recurrence dates
-    if ($recurrence_type && $start_date && $recurrence_interval && $recurrence_end_date) {
-        $recurrence_dates = generate_recurrence_dates($start_date, $recurrence_type, $recurrence_interval, $recurrence_end_date);
-        update_post_meta($post_id, '_event_recurrence_dates', $recurrence_dates);
+    // Clear recurrence data if recurrence type is "none"
+    if ($recurrence_type === 'none') {
+        delete_post_meta($post_id, '_event_recurrence_type');
+        delete_post_meta($post_id, '_event_recurrence_interval');
+        delete_post_meta($post_id, '_event_recurrence_end_date');
+        delete_post_meta($post_id, '_event_recurrence_dates');
+    } else {
+        // Generate and save recurrence dates
+        if ($recurrence_type && $start_date && $recurrence_interval && $recurrence_end_date) {
+            $recurrence_dates = generate_recurrence_dates($start_date, $recurrence_type, $recurrence_interval, $recurrence_end_date);
+            update_post_meta($post_id, '_event_recurrence_dates', $recurrence_dates);
+        }
     }
 }
 
