@@ -15,12 +15,28 @@
     <?php
     require_once plugin_dir_path(__FILE__) . '../template-functions.php';
 
+    $today = date('Y-m-d');
+
     $args = array(
         'post_type' => 'event',
         'posts_per_page' => -1,
         'meta_key' => '_event_start_date',
         'orderby' => 'meta_value',
-        'order' => 'ASC'
+        'order' => 'ASC',
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => '_event_start_date',
+                'value' => $today,
+                'compare' => '>=',
+                'type' => 'DATE'
+            ),
+            array(
+                'key' => '_event_recurrence_dates',
+                'value' => $today,
+                'compare' => 'LIKE'
+            )
+        )
     );
 
     $query = new WP_Query($args);

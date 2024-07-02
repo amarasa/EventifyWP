@@ -26,6 +26,9 @@ function render_event_details_meta_box($post)
     $contact_phone = get_post_meta($post->ID, '_event_contact_phone', true);
     $contact_email = get_post_meta($post->ID, '_event_contact_email', true);
     $cost_to_attend = get_post_meta($post->ID, '_event_cost_to_attend', true);
+    $recurrence_type = get_post_meta($post->ID, '_event_recurrence_type', true);
+    $recurrence_interval = get_post_meta($post->ID, '_event_recurrence_interval', true);
+    $recurrence_end_date = get_post_meta($post->ID, '_event_recurrence_end_date', true);
 ?>
     <p>
         <label for="event_start_date"><?php _e('Start Date:', 'basic-events'); ?></label>
@@ -55,6 +58,25 @@ function render_event_details_meta_box($post)
             <?php _e('Free Event', 'basic-events'); ?>
         </label>
     </p>
+    <hr>
+    <h3><?php _e('Recurrence Settings', 'basic-events'); ?></h3>
+    <p>
+        <label for="event_recurrence_type"><?php _e('Recurrence Type:', 'basic-events'); ?></label>
+        <select id="event_recurrence_type" name="event_recurrence_type">
+            <option value="none" <?php selected($recurrence_type, 'none'); ?>><?php _e('None', 'basic-events'); ?></option>
+            <option value="daily" <?php selected($recurrence_type, 'daily'); ?>><?php _e('Daily', 'basic-events'); ?></option>
+            <option value="weekly" <?php selected($recurrence_type, 'weekly'); ?>><?php _e('Weekly', 'basic-events'); ?></option>
+            <option value="monthly" <?php selected($recurrence_type, 'monthly'); ?>><?php _e('Monthly', 'basic-events'); ?></option>
+        </select>
+    </p>
+    <p>
+        <label for="event_recurrence_interval"><?php _e('Recurrence Interval:', 'basic-events'); ?></label>
+        <input type="number" id="event_recurrence_interval" name="event_recurrence_interval" value="<?php echo esc_attr($recurrence_interval); ?>" min="1" />
+    </p>
+    <p>
+        <label for="event_recurrence_end_date"><?php _e('Recurrence End Date:', 'basic-events'); ?></label>
+        <input type="date" id="event_recurrence_end_date" name="event_recurrence_end_date" value="<?php echo esc_attr($recurrence_end_date); ?>" />
+    </p>
     <script>
         jQuery(document).ready(function($) {
             function toggleCostField() {
@@ -74,6 +96,7 @@ function render_event_details_meta_box($post)
     </script>
 <?php
 }
+
 
 function save_event_details($post_id)
 {
@@ -116,7 +139,22 @@ function save_event_details($post_id)
         $cost_to_attend = '0';
     }
     update_post_meta($post_id, '_event_cost_to_attend', $cost_to_attend);
+
+    // Save recurrence fields
+    $recurrence_type = sanitize_text_field($_POST['event_recurrence_type']);
+    update_post_meta($post_id, '_event_recurrence_type', $recurrence_type);
+
+    $recurrence_interval = sanitize_text_field($_POST['event_recurrence_interval']);
+    update_post_meta($post_id, '_event_recurrence_interval', $recurrence_interval);
+
+    $recurrence_end_date = sanitize_text_field($_POST['event_recurrence_end_date']);
+    update_post_meta($post_id, '_event_recurrence_end_date', $recurrence_end_date);
+
+    // Generate and save recurrence dates
+    if ($recurrence_type && $start_date && $recurrence_interval && $recurrence_end_date) {
+        $recurrence_dates = generate_recurrence_dates($start_date, $recurrence_type, $recurrence_interval, $recurrence_end_date);
+        update_post_meta($post_id, '_event_recurrence_dates', $recurrence_dates);
+    }
 }
 
 add_action('save_post', 'save_event_details');
-?>

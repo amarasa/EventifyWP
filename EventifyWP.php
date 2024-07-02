@@ -19,6 +19,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/template-overrides.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
 require_once plugin_dir_path(__FILE__) . 'includes/cpt-configurations.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ajax-functions.php';
+require_once plugin_dir_path(__FILE__) . 'includes/recurrence-functions.php';
 
 // Automatically include all shortcode files
 foreach (glob(plugin_dir_path(__FILE__) . 'includes/shortcodes/*.php') as $shortcode_file) {

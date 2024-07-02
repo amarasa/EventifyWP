@@ -102,6 +102,30 @@ while (have_posts()) : the_post();
             </p>
         </div>
 
+        <?php
+        $recurrence_dates = get_post_meta(get_the_ID(), '_event_recurrence_dates', true);
+
+        if ($recurrence_dates && is_array($recurrence_dates)) : ?>
+            <div class="recurrence-dates-section">
+                <h2><?php _e('Recurring Dates', 'basic-events'); ?></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><?php _e('Date', 'basic-events'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recurrence_dates as $date) : ?>
+                            <tr>
+                                <td><?php echo date('l, F j, Y', strtotime($date)); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+
+
         <div class="venue-details-section">
             <h2>Venue Details</h2>
             <?php if ($venue_name) : ?>
