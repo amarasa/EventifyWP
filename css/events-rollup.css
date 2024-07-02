@@ -1,0 +1,140 @@
+/* Event Archive Page Styles */
+
+.events-rollup {
+	/* Event Archive Page Styles */
+	.event-list {
+		margin: 20px 0;
+	}
+
+	.event-month-group {
+		margin-bottom: 40px;
+	}
+
+	.event-month-title {
+		font-size: 1.8em;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 20px;
+	}
+
+	.event-archive-item {
+		display: flex;
+		flex-wrap: wrap;
+		border-bottom: 1px solid #ddd;
+		padding: 20px 0;
+		margin: 20px 0;
+	}
+
+	.event-date {
+		flex: 0 0 60px;
+		text-align: center;
+		margin-right: 20px;
+	}
+
+	.event-day {
+		font-size: 0.75em;
+		color: #333;
+		text-transform: uppercase;
+	}
+
+	.event-date-number {
+		font-size: 1em;
+		color: #666;
+		font-weight: bold;
+	}
+
+	.event-content {
+		flex: 1;
+	}
+
+	.entry-meta {
+		font-size: 0.9em;
+		color: #666;
+		margin-bottom: 10px;
+	}
+
+	.entry-header .entry-title {
+		font-size: 1.5em;
+		font-weight: bold;
+		margin-bottom: 10px;
+		color: #333;
+		text-decoration: none;
+	}
+
+	.entry-content {
+		font-size: 1em;
+		color: #666;
+	}
+
+	.event-thumbnail {
+		flex: 0 0 200px;
+		margin-left: 20px;
+	}
+
+	.event-thumbnail img {
+		width: 100%;
+		height: auto;
+		border-radius: 4px;
+	}
+
+	/* Event Title Link Color */
+	.event-archive-item .entry-title a {
+		color: #333;
+		text-decoration: none;
+		font-weight: normal;
+		font-size: 1.5rem;
+	}
+
+	/* Event Title Link Hover Effect */
+	.event-archive-item .entry-title a:hover {
+		text-decoration: underline;
+	}
+
+	.event-date-time {
+		margin-bottom: 0;
+	}
+
+	.event-location {
+		font-size: 15px;
+		display: flex;
+		align-items: center;
+		font-size: 0.9em;
+		color: #333;
+	}
+
+	.event-location svg {
+		margin-right: 5px;
+		fill: #666;
+	}
+
+	/* CSS for the event link */
+	.see-event a {
+		color: #666;
+		font-size: 16px;
+		text-decoration: none;
+		position: relative;
+		display: inline-block;
+		transition: color 0.3s ease;
+	}
+
+	.see-event a::after {
+		content: "";
+		position: absolute;
+		width: 0;
+		height: 1px;
+		display: block;
+		margin-top: 5px;
+		left: 0;
+		background: #666;
+		transition: width 0.3s ease, left 0.3s ease;
+	}
+
+	.see-event a:hover {
+		color: #666;
+	}
+
+	.see-event a:hover::after {
+		width: 100%;
+		left: 0;
+	}
+}
