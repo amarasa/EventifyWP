@@ -115,15 +115,19 @@ while (have_posts()) : the_post();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($recurrence_dates as $date) : ?>
+                        <?php foreach ($recurrence_dates as $date) :
+                            $start_time = get_post_meta(get_the_ID(), '_event_start_time', true);
+                            $end_time = get_post_meta(get_the_ID(), '_event_end_time', true);
+                        ?>
                             <tr>
-                                <td><?php echo date('l, F j, Y', strtotime($date)); ?></td>
+                                <td><?php echo date('l, F j, Y', strtotime($date)); ?> at <?php echo date('g:i A', strtotime($start_time)); ?> - <?php echo date('g:i A', strtotime($end_time)); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         <?php endif; ?>
+
 
 
         <div class="venue-details-section">

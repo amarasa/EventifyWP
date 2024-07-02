@@ -1,17 +1,36 @@
 <?php
-// Add a featured event column
-add_filter('manage_event_posts_columns', 'add_featured_event_column');
-function add_featured_event_column($columns)
+// Add columns to the event post type list table
+add_filter('manage_event_posts_columns', 'add_event_columns');
+function add_event_columns($columns)
 {
-    $columns['featured_event'] = __('Featured', 'basic-events');
-    $columns['tags'] = __('Tags', 'basic-events'); // Add tags column
-    return $columns;
+    $new_columns = array();
+    foreach ($columns as $key => $title) {
+        $new_columns[$key] = $title;
+        if ('title' === $key) {
+            $new_columns['recurring_series'] = __('Recurring Series', 'basic-events');
+        }
+    }
+    $new_columns['featured_event'] = __('Featured', 'basic-events');
+    $new_columns['tags'] = __('Tags', 'basic-events'); // Add tags column
+    return $new_columns;
 }
 
-// Populate the featured event column
-add_action('manage_event_posts_custom_column', 'populate_featured_event_column', 10, 2);
-function populate_featured_event_column($column, $post_id)
+// Populate the event columns
+add_action('manage_event_posts_custom_column', 'populate_event_columns', 10, 2);
+function populate_event_columns($column, $post_id)
 {
+    if ($column === 'recurring_series') {
+        $recurrence_dates = get_post_meta($post_id, '_event_recurrence_dates', true);
+        if ($recurrence_dates && is_array($recurrence_dates)) {
+            $upcoming_dates = array_filter($recurrence_dates, function ($date) {
+                return strtotime($date) >= strtotime(date('Y-m-d'));
+            });
+            echo count($upcoming_dates) . ' Events Remaining';
+        } else {
+            echo 'Single Event';
+        }
+    }
+
     if ($column === 'featured_event') {
         $is_featured = get_post_meta($post_id, '_featured_event', true);
         $star_class = $is_featured ? 'dashicons-star-filled' : 'dashicons-star-empty';
