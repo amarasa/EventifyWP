@@ -56,6 +56,19 @@ function render_related_events_meta_box($post)
             </div>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function($) {
+            $('#add-related-event').click(function() {
+                var selectedEvent = $('#all-events-list option:selected');
+                selectedEvent.appendTo('#related-events-list');
+            });
+
+            $('#remove-related-event').click(function() {
+                var selectedEvent = $('#related-events-list option:selected');
+                selectedEvent.appendTo('#all-events-list');
+            });
+        });
+    </script>
 <?php
 }
 

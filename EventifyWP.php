@@ -20,6 +20,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
 require_once plugin_dir_path(__FILE__) . 'includes/cpt-configurations.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ajax-functions.php';
 require_once plugin_dir_path(__FILE__) . 'includes/recurrence-functions.php';
+require_once plugin_dir_path(__FILE__) . 'includes/event-functions.php';
 
 // Automatically include all shortcode files
 foreach (glob(plugin_dir_path(__FILE__) . 'includes/shortcodes/*.php') as $shortcode_file) {
@@ -52,6 +53,19 @@ function enqueue_scripts()
 add_action('wp_enqueue_scripts', 'enqueue_scripts');
 
 
+function enqueue_slick_scripts()
+{
+    // Check if Slick is already enqueued
+    if (!wp_script_is('slick-js', 'enqueued')) {
+        wp_enqueue_style('slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css');
+        wp_enqueue_style('slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css');
+        wp_enqueue_script('slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', array('jquery'), null, true);
+    }
+
+    // Enqueue the custom initialization script
+    wp_enqueue_script('slick-init-js', plugin_dir_url(__FILE__) . 'js/slick-init.js', array('jquery', 'slick-js'), null, true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_slick_scripts');
 
 
 // Enqueue the featured event toggle script for the admin page
